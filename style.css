@@ -32,10 +32,12 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* ========== 页面切换 ========== */
 .page { display: none; padding: 16px; animation: fadeIn 0.25s ease; }
 .page.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
+/* ========== 顶部栏 ========== */
 .top-bar { padding: 8px 0 16px 0; text-align: center; position: relative; }
 .headline { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; color: var(--md-on-surface); }
 .subhead { font-size: 14px; color: var(--md-on-surface-variant); margin-top: 4px; }
@@ -44,12 +46,14 @@ body {
     background: transparent; font-size: 22px; cursor: pointer;
 }
 
+/* ========== M3 卡片 ========== */
 .m3-card {
     background: var(--md-surface-variant); border-radius: var(--radius-xl);
     padding: 20px; margin-bottom: 16px; border: 1px solid #E0E0E0; box-shadow: var(--md-shadow);
 }
 .card-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
 
+/* ========== 站点选择 ========== */
 .station-row { display: flex; align-items: center; margin: 8px 0; }
 .station-icon { font-size: 22px; margin-right: 10px; }
 .m3-select {
@@ -61,6 +65,7 @@ body {
 }
 .m3-select:focus { outline: none; border-color: var(--md-primary); box-shadow: 0 0 0 3px rgba(103,80,164,0.15); }
 
+/* ========== M3 按钮 ========== */
 .m3-btn {
     display: block; width: 100%; padding: 14px; border-radius: var(--radius-full);
     font-size: 15px; font-weight: 600; cursor: pointer; border: none;
@@ -72,6 +77,7 @@ body {
 .m3-btn-outlined:active { background: var(--md-primary-container); transform: scale(0.96); }
 .m3-btn-tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); width: auto; margin: 8px auto; padding: 10px 24px; font-size: 14px; }
 
+/* ========== Chip 模式选择 ========== */
 .chip-row { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
 .m3-chip {
     display: flex; align-items: center; padding: 8px 16px; border: 2px solid var(--md-outline);
@@ -83,6 +89,7 @@ body {
     color: var(--md-on-primary-container); font-weight: 600;
 }
 
+/* ========== 结果区域 ========== */
 .placeholder { color: var(--md-on-surface-variant); text-align: center; padding: 32px 0; font-size: 14px; }
 .route-segment {
     border-left: 4px solid var(--md-primary); padding: 10px 14px; margin: 8px 0;
@@ -96,6 +103,7 @@ body {
 .route-time { color: #4CAF50; font-weight: 700; font-size: 16px; }
 .route-summary { background: var(--md-primary-container); padding: 14px; border-radius: var(--radius-lg); margin-top: 10px; }
 
+/* ========== 底部导航 ========== */
 .bottom-nav {
     position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
     width: 100%; max-width: 480px; background: var(--md-surface-variant);
@@ -110,6 +118,7 @@ body {
 .nav-item.active { background: var(--md-primary-container); color: var(--md-on-primary-container); font-weight: 600; }
 .nav-icon { font-size: 22px; }
 
+/* ========== 弹窗 ========== */
 .modal {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.5); display: none; justify-content: center;
@@ -123,6 +132,7 @@ body {
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal-handle { width: 32px; height: 4px; background: var(--md-outline); border-radius: 2px; margin: 0 auto 12px auto; }
 
+/* ========== 线路图 ========== */
 .map-tip { font-size: 12px; color: var(--md-on-surface-variant); margin-bottom: 12px; }
 .map-line { margin: 8px 0; padding: 8px; border-radius: var(--radius-md); }
 .map-station {
@@ -132,3 +142,105 @@ body {
 }
 .map-station:active { background: var(--md-primary-container); border-color: var(--md-primary); }
 .map-station.transfer-station { border-width: 3px; border-color: #333; background: #FFF3E0; font-weight: bold; }
+
+/* ========== 列表项（收藏/历史用） ========== */
+.list-item {
+    padding: 12px; margin: 4px 0; background: #FFFFFF;
+    border-radius: var(--radius-md); cursor: pointer; transition: 0.2s;
+}
+.list-item:active { background: var(--md-primary-container); }
+
+/* ================================================================ */
+/* ========== 电脑端适配（768px 以上） ========== */
+/* ================================================================ */
+@media (min-width: 768px) {
+    body {
+        max-width: 900px;
+        padding: 0 40px 100px 40px;
+    }
+
+    .page.active#pageHome {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+    }
+
+    .top-bar {
+        width: 100%;
+        text-align: left;
+        padding: 24px 0 16px 0;
+    }
+    .headline {
+        font-size: 36px;
+    }
+    .subhead {
+        font-size: 16px;
+    }
+
+    /* 查询卡片和结果卡片并排 */
+    #pageHome .m3-card {
+        flex: 1 1 45%;
+        min-width: 350px;
+        margin-bottom: 0;
+    }
+    #resultCard {
+        align-self: flex-start;
+    }
+
+    /* 底部导航居中 */
+    .bottom-nav {
+        max-width: 900px;
+        justify-content: center;
+        gap: 32px;
+    }
+    .nav-item {
+        flex: 0 0 auto;
+        min-width: 80px;
+        font-size: 13px;
+    }
+    .nav-icon {
+        font-size: 26px;
+    }
+
+    /* 二级页面居中 */
+    #pageMap .m3-card,
+    #pageFav .m3-card,
+    #pageHistory .m3-card {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* 弹窗居中 */
+    .modal {
+        align-items: center;
+    }
+    .modal-content {
+        border-radius: var(--radius-xl);
+        max-width: 500px;
+    }
+
+    /* 线路图站点放大 */
+    .map-station {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
+
+/* ================================================================ */
+/* ========== 大屏幕适配（1024px 以上） ========== */
+/* ================================================================ */
+@media (min-width: 1024px) {
+    body {
+        max-width: 1100px;
+    }
+
+    .headline {
+        font-size: 42px;
+    }
+
+    .bottom-nav {
+        max-width: 1100px;
+        gap: 48px;
+    }
+}
