@@ -1,114 +1,107 @@
 <!DOCTYPE html>
-<html lang="zh-CN" dir="ltr">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>西安地铁出行小助手</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 无障碍工具栏 -->
-    <div class="a11y-bar" role="toolbar" aria-label="工具栏">
-        <button class="a11y-btn" onclick="toggleFontSize()" aria-label="切换大字体">🔍</button>
-        <button class="a11y-btn" onclick="toggleContrast()" aria-label="切换高对比度">🎨</button>
-        <button class="a11y-btn" onclick="speakResult()" aria-label="朗读结果">🔊</button>
-        <button class="a11y-btn" onclick="toggleBigButtons()" aria-label="大按钮">👆</button>
-        <span style="color:#fff;margin:0 4px;">|</span>
-        <button class="a11y-btn" onclick="toggleDarkMode()" aria-label="切换深色模式" id="btnDarkMode">🌙</button>
-        <button class="a11y-btn" onclick="switchLanguage('zh')" aria-label="中文" id="btnZh">🇨🇳</button>
-        <button class="a11y-btn" onclick="switchLanguage('en')" aria-label="English" id="btnEn">🇬🇧</button>
-        <button class="a11y-btn" onclick="switchLanguage('ja')" aria-label="日本語" id="btnJa">🇯🇵</button>
+
+    <!-- ==================== 首页：查询 ==================== -->
+    <div class="page active" id="pageHome">
+        <header class="top-bar">
+            <h1 class="headline">🚇 地铁出行</h1>
+            <p class="subhead">Material 3 Expressive</p>
+        </header>
+
+        <div class="m3-card">
+            <div class="station-row">
+                <span class="station-icon">🚩</span>
+                <select id="startStation" class="m3-select">
+                    <option value="">选择起点站</option>
+                </select>
+            </div>
+
+            <button class="m3-btn m3-btn-tonal" onclick="swapStations()">⇅ 交换起终点</button>
+
+            <div class="station-row">
+                <span class="station-icon">🏁</span>
+                <select id="endStation" class="m3-select">
+                    <option value="">选择终点站</option>
+                </select>
+            </div>
+
+            <div class="chip-row">
+                <label class="m3-chip"><input type="radio" name="mode" value="auto" checked><span>推荐</span></label>
+                <label class="m3-chip"><input type="radio" name="mode" value="time"><span>最短时间</span></label>
+                <label class="m3-chip"><input type="radio" name="mode" value="transfer"><span>最少换乘</span></label>
+            </div>
+
+            <button class="m3-btn m3-btn-filled" onclick="queryRoute()">🔍 查询路线</button>
+            <button class="m3-btn m3-btn-outlined" onclick="resetQuery()">🔄 重置</button>
+        </div>
+
+        <div class="m3-card" id="resultCard">
+            <h3 class="card-title">📋 查询结果</h3>
+            <div id="resultContent">
+                <p class="placeholder">💡 选择起点和终点后点击查询</p>
+            </div>
+        </div>
     </div>
 
-    <!-- 顶部标题 -->
-    <header class="header" role="banner">
-        <h1 id="appTitle">🚇 西安地铁出行小助手</h1>
-        <p id="appSubtitle">快速查询换乘方案 · 无障碍设计</p>
-    </header>
-
-    <!-- 主内容 -->
-    <main role="main">
-        <div class="query-card" role="search">
-            <div class="station-row">
-                <label for="startStation" class="station-icon" aria-hidden="true">🚩</label>
-                <select id="startStation" class="station-select" aria-label="起点站">
-                    <option value="" id="startPlaceholder">选择起点站</option>
-                </select>
-            </div>
-
-            <button class="swap-btn" onclick="swapStations()" aria-label="交换起终点" id="swapBtn">
-                ⇅ 交换起终点
-            </button>
-
-            <div class="station-row">
-                <label for="endStation" class="station-icon" aria-hidden="true">🏁</label>
-                <select id="endStation" class="station-select" aria-label="终点站">
-                    <option value="" id="endPlaceholder">选择终点站</option>
-                </select>
-            </div>
-
-            <fieldset class="mode-row">
-                <legend id="modeLegend">查询模式：</legend>
-                <label class="mode-label">
-                    <input type="radio" name="mode" value="auto" checked>
-                    <span id="modeRecommend">推荐方案</span>
-                </label>
-                <label class="mode-label">
-                    <input type="radio" name="mode" value="time">
-                    <span id="modeShortest">最短时间</span>
-                </label>
-                <label class="mode-label">
-                    <input type="radio" name="mode" value="transfer">
-                    <span id="modeLeast">最少换乘</span>
-                </label>
-            </fieldset>
-
-            <div class="btn-row">
-                <button class="btn-primary" onclick="queryRoute()" id="btnQuery">
-                    🔍 查询路线
-                </button>
-                <button class="btn-secondary" onclick="resetQuery()" id="btnReset">
-                    🔄 重置
-                </button>
-            </div>
-        </div>
-
-        <div class="result-card" id="resultCard" aria-live="polite">
-            <h3 id="resultTitle">📋 查询结果</h3>
-            <div id="resultContent">
-                <p class="placeholder" id="resultPlaceholder">💡 选择起点和终点后点击查询</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- 底部导航 -->
-    <nav class="bottom-nav" role="navigation">
-        <button class="nav-btn active" onclick="showTab('query')" id="navQuery">🔍 查询</button>
-        <button class="nav-btn" onclick="showTab('map')" id="navMap">🗺️ 线路图</button>
-        <button class="nav-btn" onclick="showTab('fav')" id="navFav">⭐ 收藏</button>
-        <button class="nav-btn" onclick="showTab('history')" id="navHistory">🕐 历史</button>
-    </nav>
-
-    <!-- 线路图弹窗 -->
-    <div class="modal" id="mapModal" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <h3 id="mapTitle">🗺️ 西安地铁线路图</h3>
-                <button onclick="closeMap()" class="modal-close" aria-label="关闭">✕</button>
-            </div>
-            <p id="mapTip" style="font-size:12px;color:#666;margin:5px 0;">点击站点设为起点，再次点击设为终点</p>
+    <!-- ==================== 线路图页面 ==================== -->
+    <div class="page" id="pageMap">
+        <header class="top-bar" style="display:flex;align-items:center;justify-content:space-between;">
+            <button class="icon-btn" onclick="goToPage('pageHome')" style="position:static;">←</button>
+            <h1 class="headline" style="flex:1;text-align:center;">🗺️ 线路图</h1>
+            <div style="width:48px;"></div>
+        </header>
+        <div class="m3-card">
+            <p class="map-tip">点击站点设起点，再点设终点</p>
             <div id="mapCanvas"></div>
         </div>
     </div>
 
-    <!-- 列表弹窗 -->
-    <div class="modal" id="listModal" role="dialog" aria-hidden="true">
+    <!-- ==================== 收藏页面 ==================== -->
+    <div class="page" id="pageFav">
+        <header class="top-bar" style="display:flex;align-items:center;justify-content:space-between;">
+            <button class="icon-btn" onclick="goToPage('pageHome')" style="position:static;">←</button>
+            <h1 class="headline" style="flex:1;text-align:center;">⭐ 收藏</h1>
+            <div style="width:48px;"></div>
+        </header>
+        <div class="m3-card">
+            <div id="favContent"><p class="placeholder">暂无收藏路线</p></div>
+        </div>
+    </div>
+
+    <!-- ==================== 历史页面 ==================== -->
+    <div class="page" id="pageHistory">
+        <header class="top-bar" style="display:flex;align-items:center;justify-content:space-between;">
+            <button class="icon-btn" onclick="goToPage('pageHome')" style="position:static;">←</button>
+            <h1 class="headline" style="flex:1;text-align:center;">🕐 历史</h1>
+            <div style="width:48px;"></div>
+        </header>
+        <div class="m3-card">
+            <div id="historyContent"><p class="placeholder">暂无历史记录</p></div>
+            <button class="m3-btn m3-btn-outlined" onclick="clearHistory()" style="margin-top:12px;">🗑️ 清空历史</button>
+        </div>
+    </div>
+
+    <!-- ==================== 底部导航 ==================== -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="goToPage('pageHome')"><span class="nav-icon">🔍</span><span>查询</span></button>
+        <button class="nav-item" onclick="goToPage('pageMap')"><span class="nav-icon">🗺️</span><span>线路图</span></button>
+        <button class="nav-item" onclick="goToPage('pageFav')"><span class="nav-icon">⭐</span><span>收藏</span></button>
+        <button class="nav-item" onclick="goToPage('pageHistory')"><span class="nav-icon">🕐</span><span>历史</span></button>
+    </nav>
+
+    <!-- ==================== 弹窗 ==================== -->
+    <div class="modal" id="modalDetail">
         <div class="modal-content">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <h3 id="listModalTitle">列表</h3>
-                <button onclick="closeList()" class="modal-close" aria-label="关闭">✕</button>
-            </div>
-            <div id="listContent"></div>
+            <div class="modal-handle"></div>
+            <div id="modalDetailContent"></div>
+            <button class="m3-btn m3-btn-filled" onclick="closeModal('modalDetail')">关闭</button>
         </div>
     </div>
 
